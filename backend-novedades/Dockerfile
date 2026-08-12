@@ -1,7 +1,8 @@
 FROM php:8.2-fpm-alpine
 
 # Install system dependencies
-RUN apk add --no-linux-headers --no-cache \
+RUN apk add --no-cache \
+    linux-headers \
     nginx \
     supervisor \
     curl \

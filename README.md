@@ -17,76 +17,70 @@ Plataforma interna para **registrar, aprobar y consolidar novedades de personal*
 
 ## 🚀 Despliegue en Dokploy
 
-[Dokploy](https://dokploy.com/) permite desplegar tanto con **Dockerfiles individuales** como con **Docker Compose**. Dado que esta aplicación consta de un **Backend (API Laravel)** y un **Frontend (React SPA)**, se recomienda desplegarlos como **2 Servicios / Aplicaciones** independientes en Dokploy dentro del mismo proyecto.
+Configuración de variables de entorno para los dominios reales `trapiche.manevoapp.com` y `api-novedades.manevoapp.com`.
 
-### Opción Recomendada: Despliegue como 2 Servicios en Dokploy
-
-#### 1. Despliegue del Backend (`backend-novedades`)
+### 1. Despliegue del Backend (`backend-novedades`)
 
 1. En Dokploy, crea una nueva **Application**.
-2. Selecciona tu proveedor de Git (GitHub, GitLab, etc.) y conecta este repositorio.
-3. Configura los siguientes parámetros en la pestaña **General / Build**:
+2. Selecciona tu repositorio de GitHub.
+3. En la pestaña **General / Build**:
    - **Build Type:** `Dockerfile`
    - **Context Path:** `/backend-novedades`
    - **Dockerfile Path:** `/backend-novedades/Dockerfile`
-4. En la sección **Environment Variables**, configura:
+4. En **Environment Variables**, configura exactamente lo siguiente:
    ```env
    APP_NAME="Trapiche Novedades"
    APP_ENV=production
    APP_DEBUG=false
-   APP_KEY=base64:COPIA_AQUI_UN_APP_KEY_VALIDO_DE_LARAVEL
-   APP_URL=https://api-novedades.midominio.com
-   FRONTEND_URL=https://novedades.midominio.com
+   APP_KEY=base64:GENERA_UN_APP_KEY_AQUI
+   APP_URL=https://api-novedades.manevoapp.com
+   FRONTEND_URL=https://trapiche.manevoapp.com
+
    DB_CONNECTION=sqlite
    DB_DATABASE=/var/www/html/storage/database.sqlite
    SESSION_DRIVER=database
    QUEUE_CONNECTION=database
    CACHE_STORE=database
-   CORS_ALLOWED_ORIGINS=https://novedades.midominio.com
-   SANCTUM_STATEFUL_DOMAINS=novedades.midominio.com,api-novedades.midominio.com
+
+   CORS_ALLOWED_ORIGINS=https://trapiche.manevoapp.com
+   SANCTUM_STATEFUL_DOMAINS=trapiche.manevoapp.com,api-novedades.manevoapp.com
+   SESSION_DOMAIN=.manevoapp.com
+
    RUN_MIGRATIONS=true
    RUN_SEED=true
    ```
-   > 💡 *Nota:* Para generar un `APP_KEY` válido de Laravel puedes ejecutar en local `php artisan key:generate --show`.
+   > 💡 *Nota:* Para generar una `APP_KEY` válida, ejecuta en tu terminal local: `php artisan key:generate --show`.
 
-5. En la sección **Domains / Port**:
-   - Asigna el dominio público para la API (ej: `api-novedades.midominio.com`).
-   - Define el puerto del contenedor: `8000`.
+5. En **Domains / Port**:
+   - **Host:** `api-novedades.manevoapp.com`
+   - **Container Port:** `8000`
+   - **HTTPS / SSL:** Habilitado (Let's Encrypt).
 
-6. En la sección **Volumes** (para no perder la base de datos SQLite ni adjuntos al re-desplegar):
-   - Monta un volumen persistente hacia `/var/www/html/storage`.
+6. En **Volumes**:
+   - Monta un volumen hacia `/var/www/html/storage` para no perder la base de datos SQLite ni archivos al re-desplegar.
 
 7. Haz clic en **Deploy**.
 
 ---
 
-#### 2. Despliegue del Frontend (`frontend-novedades`)
+### 2. Despliegue del Frontend (`frontend-novedades`)
 
-1. En Dokploy, crea otra **Application**.
-2. Conecta el mismo repositorio Git.
-3. Configura en la pestaña **General / Build**:
+1. En Dokploy, crea una segunda **Application**.
+2. Selecciona el mismo repositorio de GitHub.
+3. En la pestaña **General / Build**:
    - **Build Type:** `Dockerfile`
    - **Context Path:** `/frontend-novedades`
    - **Dockerfile Path:** `/frontend-novedades/Dockerfile`
-4. En **Build Arguments** (o Environment Variables de Build):
+4. En **Build Arguments** (o variables de entorno durante el build):
    ```env
-   VITE_API_URL=https://api-novedades.midominio.com
+   VITE_API_URL=https://api-novedades.manevoapp.com
    ```
-5. En la sección **Domains / Port**:
-   - Asigna el dominio de la interfaz de usuario (ej: `novedades.midominio.com`).
-   - Define el puerto del contenedor: `80`.
+5. En **Domains / Port**:
+   - **Host:** `trapiche.manevoapp.com`
+   - **Container Port:** `80`
+   - **HTTPS / SSL:** Habilitado (Let's Encrypt).
 
 6. Haz clic en **Deploy**.
-
----
-
-### Opción Alternativa: Despliegue con Docker Compose en Dokploy
-
-Dokploy también permite desplegar usando `docker-compose.yml`:
-
-1. En Dokploy, crea una aplicación de tipo **Compose**.
-2. Apunta a este repositorio y selecciona la ruta de `docker-compose.yml`.
-3. Ajusta las variables de entorno (`APP_KEY`, `APP_URL`, `VITE_API_URL`, `CORS_ALLOWED_ORIGINS`, `SANCTUM_STATEFUL_DOMAINS`) con tus dominios reales antes de desplegar.
 
 ---
 
