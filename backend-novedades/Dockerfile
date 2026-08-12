@@ -24,7 +24,8 @@ WORKDIR /var/www/html
 
 ENV APP_NAME="Trapiche Novedades" \
     APP_ENV=production \
-    APP_DEBUG=false \
+    APP_DEBUG=true \
+    LOG_CHANNEL=stderr \
     APP_URL=https://api-novedades.manevoapp.com \
     FRONTEND_URL=https://trapiche.manevoapp.com \
     DB_CONNECTION=sqlite \
