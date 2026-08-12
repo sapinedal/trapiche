@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:5173')),
+    'allowed_origins' => array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'https://trapiche.manevoapp.com'))),
 
     'allowed_origins_patterns' => [],
 
