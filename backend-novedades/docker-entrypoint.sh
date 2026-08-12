@@ -13,6 +13,9 @@ touch "$DB_DATABASE" 2>/dev/null || true
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 
+# Ensure .env file exists so artisan key:generate can write to it
+touch /var/www/html/.env
+
 # Always generate fresh APP_KEY on container start to guarantee exact cipher length
 echo "Generating fresh APP_KEY..."
 php artisan key:generate --force
