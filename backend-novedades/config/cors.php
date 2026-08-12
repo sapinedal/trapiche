@@ -15,11 +15,14 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/*', 'login', 'logout'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'https://trapiche.manevoapp.com'))),
+    'allowed_origins' => array_merge(
+        array_map('trim', explode(',', env('CORS_ALLOWED_ORIGINS', 'https://trapiche.manevoapp.com'))),
+        ['https://trapiche.manevoapp.com', 'https://api-novedades.manevoapp.com']
+    ),
 
     'allowed_origins_patterns' => [],
 
