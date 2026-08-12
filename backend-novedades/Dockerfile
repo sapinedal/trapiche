@@ -70,24 +70,11 @@ RUN echo 'server { \
     } \
 }' > /etc/nginx/http.d/default.conf
 
-# Supervisor config to run Nginx and PHP-FPM together
-RUN mkdir -p /etc/supervisor/conf.d/ && echo '[supervisord] \n\
-nodaemon=true \n\
-user=root \n\
-\n\
-[program:php-fpm] \n\
-command=php-fpm \n\
-autostart=true \n\
-autorestart=true \n\
-\n\
-[program:nginx] \n\
-command=nginx -g "daemon off;" \n\
-autostart=true \n\
-autorestart=true \n\
-' > /etc/supervisor/conf.d/supervisord.conf
+# Copy Supervisor config to run Nginx and PHP-FPM together
+COPY supervisord.conf /etc/supervisord.conf
 
 EXPOSE 8000
 
 ENTRYPOINT ["/var/www/html/docker-entrypoint.sh"]
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
