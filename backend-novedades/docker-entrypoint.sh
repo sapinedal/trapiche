@@ -15,9 +15,12 @@ touch "$DB_DATABASE" 2>/dev/null || true
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 
-# Ensure .env file exists
-if [ ! -f /var/www/html/.env ]; then
-    cp /var/www/html/.env.example /var/www/html/.env 2>/dev/null || touch /var/www/html/.env
+# Generate a secure dynamic APP_KEY if not provided
+if [ -z "$APP_KEY" ]; then
+    echo "Generating dynamic production APP_KEY..."
+    GENERATED_KEY="base64:$(openssl rand -base64 32)"
+    export APP_KEY="$GENERATED_KEY"
+    echo "APP_KEY=$GENERATED_KEY" > /var/www/html/.env
 fi
 
 php artisan config:clear --quiet || true

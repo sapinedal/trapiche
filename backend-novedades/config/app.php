@@ -100,13 +100,7 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
-    'key' => (function() {
-        $k = env('APP_KEY');
-        if ($k && str_starts_with($k, 'base64:')) {
-            return $k;
-        }
-        return 'base64:c3VwZXJzZWNyZXRrZXkxMjM0NTY3ODkwMTIzNDU2Nw==';
-    })(),
+    'key' => env('APP_KEY'),
 
     'previous_keys' => [
         ...array_filter(
