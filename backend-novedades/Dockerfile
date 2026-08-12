@@ -26,7 +26,6 @@ ENV APP_NAME="Trapiche Novedades" \
     APP_ENV=production \
     APP_DEBUG=true \
     LOG_CHANNEL=stderr \
-    APP_KEY=base64:c3VwZXJzZWNyZXRrZXkxMjM0NTY3ODkwMTIzNDU2Nw== \
     APP_URL=https://api-novedades.manevoapp.com \
     FRONTEND_URL=https://trapiche.manevoapp.com \
     DB_CONNECTION=sqlite \

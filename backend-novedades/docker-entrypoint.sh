@@ -13,11 +13,9 @@ touch "$DB_DATABASE" 2>/dev/null || true
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 
-# Ensure APP_KEY exists and is valid
-if [ -z "$APP_KEY" ] || ! echo "$APP_KEY" | grep -q "^base64:"; then
-    echo "Generating new valid APP_KEY..."
-    php artisan key:generate --force
-fi
+# Always generate fresh APP_KEY on container start to guarantee exact cipher length
+echo "Generating fresh APP_KEY..."
+php artisan key:generate --force
 
 # Run migrations & seeders if database script/env enables it
 if [ "$RUN_MIGRATIONS" = "true" ]; then
