@@ -15,15 +15,9 @@ touch "$DB_DATABASE" 2>/dev/null || true
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 
-# Ensure .env file exists and has a valid APP_KEY
+# Ensure .env file exists
 if [ ! -f /var/www/html/.env ]; then
     cp /var/www/html/.env.example /var/www/html/.env 2>/dev/null || touch /var/www/html/.env
-fi
-
-if ! grep -q "^APP_KEY=base64:" /var/www/html/.env; then
-    echo "Writing fresh APP_KEY to .env..."
-    echo "APP_KEY=base64:c3VwZXJzZWNyZXRrZXkxMjM0NTY3ODkwMTIzNDU2Nw==" >> /var/www/html/.env
-    php artisan key:generate --force || true
 fi
 
 php artisan config:clear --quiet || true
