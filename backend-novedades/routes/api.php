@@ -8,7 +8,9 @@ use App\Http\Controllers\Api\NoveltyController;
 use App\Http\Controllers\Api\NoveltyTypeController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('web')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
