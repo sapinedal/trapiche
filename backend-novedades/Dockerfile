@@ -55,7 +55,7 @@ RUN echo 'server { \
 }' > /etc/nginx/http.d/default.conf
 
 # Supervisor config to run Nginx and PHP-FPM together
-RUN echo '[supervisord] \n\
+RUN mkdir -p /etc/supervisor/conf.d/ && echo '[supervisord] \n\
 nodaemon=true \n\
 user=root \n\
 \n\
