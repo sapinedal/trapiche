@@ -19,6 +19,7 @@ touch /var/www/html/.env
 # Always generate fresh APP_KEY on container start to guarantee exact cipher length
 echo "Generating fresh APP_KEY..."
 php artisan key:generate --force
+php artisan config:clear --quiet || true
 
 # Run migrations & seeders if database script/env enables it
 if [ "$RUN_MIGRATIONS" = "true" ]; then
