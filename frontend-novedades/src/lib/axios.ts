@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const envUrl = import.meta.env.VITE_API_URL;
-const API_URL = envUrl && envUrl.trim() !== "" ? envUrl : "https://api-novedades.manevoapp.com";
+const API_URL = (envUrl && !envUrl.includes("localhost")) ? envUrl : "https://api-novedades.manevoapp.com";
 
 export const api = axios.create({
   baseURL: `${API_URL}/api`,
