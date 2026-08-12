@@ -13,9 +13,9 @@ touch "$DB_DATABASE" 2>/dev/null || true
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true
 
-# Ensure APP_KEY exists
-if [ -z "$APP_KEY" ]; then
-    echo "Generating APP_KEY..."
+# Ensure APP_KEY exists and is valid
+if [ -z "$APP_KEY" ] || ! echo "$APP_KEY" | grep -q "^base64:"; then
+    echo "Generating new valid APP_KEY..."
     php artisan key:generate --force
 fi
 
