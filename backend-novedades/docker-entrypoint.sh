@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+cd /var/www/html
+
 # Ensure storage subdirectories and database exist
 mkdir -p /var/www/html/storage/framework/sessions \
          /var/www/html/storage/framework/views \
