@@ -22,6 +22,22 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+ENV APP_NAME="Trapiche Novedades" \
+    APP_ENV=production \
+    APP_DEBUG=false \
+    APP_URL=https://api-novedades.manevoapp.com \
+    FRONTEND_URL=https://trapiche.manevoapp.com \
+    DB_CONNECTION=sqlite \
+    DB_DATABASE=/var/www/html/storage/database.sqlite \
+    SESSION_DRIVER=database \
+    QUEUE_CONNECTION=database \
+    CACHE_STORE=database \
+    CORS_ALLOWED_ORIGINS=https://trapiche.manevoapp.com \
+    SANCTUM_STATEFUL_DOMAINS=trapiche.manevoapp.com,api-novedades.manevoapp.com \
+    SESSION_DOMAIN=.manevoapp.com \
+    RUN_MIGRATIONS=true \
+    RUN_SEED=true
+
 # Copy application files
 COPY . /var/www/html
 
